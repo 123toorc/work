@@ -1,0 +1,87 @@
+git install xen project.
+
+branch unstable-4.15 
+
+there will be a dependents, one of the dynamic lib version is 3.0.0 which is not satisfied. 
+
+apt-get install lib-xen or xenlib, which will download the 4.11 version of lib. 
+
+(I don't know if this mean, what I did from scratch to compile the xen is in vain or not)
+
+there is no xm, it should be fine. for xl, there are three system service has to be enable and start. 
+
+systemctl enable xen-qemu-dom0-disk-backend.service
+systemctl enable xen-init-dom0.service
+systemctl enable xenconsoled.service
+
+then the xl is worked. 
+
+xl list the domain, there already has a domain0 which is host, the manager domain. 
+
+create a xr1.cfg file. 
+
+the basical is like 
+--------------------------------------------------
+builder = "hvm"
+name = "c6-x8664.hvm"
+memory = 4096
+vcpus = 2
+serial='pty'
+vif = [ 'mac=00:16:3E:29:00:00,bridge=xenbr0' ]
+disk = [ 'phy:/dev/vg_c6xendom0/c68-x8664-hvm,xvda,rw', 'file:/opt/isos/CentOS-6.8-x86_64-minimal.iso,xvdb:cdrom,r' ]
+boot = "dc"
+sdl = 0
+vnc = 1
+vnclisten  = "192.168.0.9"
+vncdisplay = 0
+vncpasswd  = "supersecret"
+stdvga=1
+videoram = 64
+--------------------------------------------------
+and after install the OS
+--------------------------------------------------
+# Use HVM instead of PV
+builder = "hvm"
+
+# Set memory and vcpus as needed
+memory = 4096 
+vcpus = 4
+
+# Host/Domain name
+name = "xen2"
+
+# Disks - our LVM we just created & the installer ISO image
+disk = [  
+        'phy:/home/tong/perf_test/xen2.img,xvda,rw'
+       ]
+
+# Set boot order (d = CDROM, c = HDD)
+boot = "c"
+vif= [ 'bridge=br0']
+# Use VESA-compliant display with more VRAM
+vga = "stdvga"  
+videoram = 64
+--------------------------------------------------
+
+xl create /etc/xen/config.d/xr1.cfg
+
+then we can play with it. 
+
+I have tried to the pre-built KVM qemu img. not work, doesn't know why, I believe grub control is ok. but when I 
+do xl console to attach it, it failed. 
+
+anyway, we can just install a new one based on the xen img. 
+
+with bridge, it will set it automatically. 
+
+
+
+
+
+
+
+
+
+
+
+
