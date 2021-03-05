@@ -1,0 +1,25 @@
+perf is a linux kernel tool, it based on the kernel version. 
+
+the perf can track a lot of thing, example: http://www.brendangregg.com/perf.html
+
+the perf report file can't be migrate between machines until it is archived, the perf archive is a fake command option. 
+
+correct one is perf-archive, it should be inside the source_code/tool/perf/perf-archive.sh  
+
+if there is no perf-archive in bin dir, try find it in kernel source dir. if the kernel is not self-compiled and no source code in
+
+try download the linux-<>-tools or something related. 
+
+the perf report will have a fancy view, for self compiled version of perf, it may lost. 
+
+if the kernel doesn't have > ncurses < 
+
+solution:
+
+Two extra user interfaces, TUI and GTK are disabled in http://lxr.free-electrons.com/source/tools/perf/Makefile.config?v=4.8#L499. TUI is disabled when there is no newt/slang (/usr/include/slang/slang.h or /usr/include/slang.h) and GTK2 UI needs gtk2-devel or libgtk2.0-dev. Feature macro are defined in Makefile.perf:
+
+ 42 # Define NO_SLANG if you do not want TUI support.
+ 43 #
+ 44 # Define NO_GTK2 if you do not want GTK+ GUI support.
+ 
+ 
