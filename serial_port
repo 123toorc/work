@@ -1,0 +1,7 @@
+For serial line access. we have to config the grub. 
+
+sometime it go for ttyS1 ttyS2
+
+GRUB_CMDLINE_LINUX="console=tty0 console=ttyS0,115200n8 console=ttyS1,115200n8 console=ttyS2, 115200n8 earlyprintk=ttyS1"
+
+for qemu, for some machine should add flag: -cpu host -> which is host cpu passthrough, no need for emulate other CPU 
