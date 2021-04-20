@@ -1,0 +1,32 @@
+Multi core boot of x86 and ARM. 
+
+BSP: bootstrip processor (work during the boot)
+AP: application processor (work after kernel rised by BSP)
+
+BSP in multicore:
+
+NBSP: a logic BSP in a Physical cores. 
+SBSP: a logic BSP in the system chosen from all NBSP.
+
+CPU on die rom will pick a AP that with the smallest APICID(assign to by APIC increasely) to be 
+a BSP in single core and NBSP in multi-core case
+
+Unchosen core will be stay sleep and wait for SIPI(startup inter-processor interupt) 
+
+BIOS reset vector will pick a NBSP to be a SBSP in multi-core case
+
+SBSP start MRC(Memory Reference Code), wakeup other AP and start hardware. 
+
+OSloader. (what is this? is this the one?)
+
+IA32_APIC_BASE set 1 to indicate the BSP processor. 
+
+BNR (bus not ready)
+
+For UCSB project, the x86 BSP needs send a SIPI to the ARM BSP and let it boot the kernel.
+
+record the APIC id. 
+
+Reference: 
+https://zhuanlan.zhihu.com/p/67989330
+
