@@ -1,0 +1,9 @@
+增加disk大小后， fdisk无法找到新增加的sector
+
+sudo parted -l
+or
+
+sudo parted /dev/sda unit s print
+or
+
+sudo gdisk -l /dev/sda
